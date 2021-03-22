@@ -50,7 +50,8 @@ function App() {
                 <div className="container">
                     <h1>Fruitmand bezorgservice</h1>
 
-                    <div className="fruits">Aardbei
+                    <div className="fruits">
+                        <p className="fruit-text">🍓 Aardbei</p>
                         <button
                             type="button"
                             name="aardbei-min"
@@ -65,7 +66,9 @@ function App() {
                         >+1
                         </button>
                     </div>
-                    <div className="fruits">Banaan
+
+                    <div className="fruits">
+                        <p className="fruit-text"> 🍌 Banaan</p>
                         <button
                             type="button"
                             name="aardbei-min"
@@ -80,7 +83,8 @@ function App() {
                         >+1
                         </button>
                     </div>
-                    <div className="fruits">Appel
+                    <div className="fruits">
+                        <p className="fruit-text">🍏 Appel</p>
                         <button
                             type="button"
                             name="aardbei-min"
@@ -96,7 +100,8 @@ function App() {
                         </button>
                     </div>
 
-                    <div className="fruits">Kiwi
+                    <div className="fruits">
+                        <p className="fruit-text">🥝 Kiwi</p>
                         <button
                             type="button"
                             name="aardbei-min"
@@ -111,9 +116,8 @@ function App() {
                         >+1
                         </button>
                     </div>
-                </div>
 
-                <button
+                <button className="buttons"
                     type="reset"
                     name="reset-button"
                     onClick={resetButton}
@@ -121,14 +125,15 @@ function App() {
                     Reset
                 </button>
 
-                <form onSubmit={handleSubmit(onFormSubmit)}>
+                <div  className="order-container">
+                <form onSubmit={handleSubmit(onFormSubmit)} className="contact-container">
                     <label htmlFor="firstname" className="labels"
-                    >Firstname:
+                    >
+                        Firstname:
                         <input
                             type="text"
                             id="firstname"
                             name="name"
-                            // className={firstnameValue.length > 20 ? 'input-error' : ''}
                             // value={firstnameValue}
                             placeholder="Type here your firstname"
                             ref={register({required: true})}
@@ -137,12 +142,12 @@ function App() {
                         {errors.firstname && <p>{errors.firstname.message}</p>}
                     </label>
 
-                    <label htmlFor="lastname" className="labels">Lastname:
+                    <label htmlFor="lastname" className="labels"
+                    >
+                        Lastname:
                         <input
                             type="text"
                             id="lastname"
-                            name="name"
-                            // className={lastnameValue.length > 20 ? 'input-error' : ''}
                             // value={lastnameValue}
                             placeholder="Type here your lastname"
                             ref={register({required: true})}
@@ -150,35 +155,36 @@ function App() {
                         {errors.lastname && <p>{errors.lastname.message}</p>}
                     </label>
 
-                    <label htmlFor="form-age" className="labels">Leeftijd:
+                    <label htmlFor="form-age" className="labels"
+                    >
+                        Leeftijd:
                         <input
                             type="number"
                             id="form-age"
                             name="age"
-                            // className={ageValue = 0 ? 'input-error' : ''}
                             // value={ageValue}
                             placeholder="0"
-                            ref={register}
+                            ref={register({required: true})}
 
                         />
                     </label>
 
-                    <label htmlFor="form-postcode" className="labels">Postcode:
+                    <label htmlFor="form-postcode" className="labels"
+                    >
+                        Postcode:
                         <input
                             type="number"
                             id="form-postcode"
                             name="postcode"
-                            // className={postcodeValue = 0 ? 'input-error' : ''}
                             // value={postcodeValue}
                             placeholder="0"
-                            ref={register}
+                            ref={register({required: true})}
                         />
                     </label>
-
                 </form>
 
                 <h2>Bezorgfrequentie</h2>
-                <form>
+                <div className="radio-buttons">
                     <label htmlFor="everyWeek">
                         <input
                             type="radio"
@@ -215,8 +221,9 @@ function App() {
                         />
                         Anders
                     </label>
+                </div>
 
-                    <label htmlFor="label-opmerkingen" className="labels">Opmerking
+                    <label htmlFor="label-opmerkingen">Opmerking
                         <input
                             type="text"
                             id="form-opmerkingen"
@@ -243,16 +250,19 @@ function App() {
                         />
                         Ik ga akkoord met de algemene voorwaarden
                     </label>
-                </form>
 
-                <button
-                    type="submit"
-                    // disabled={!termsAndConditionsValue}
-                    // onClick={sendForm}
-                    ref={register}
-                >
-                    Verstuur
-                </button>
+                </div>
+
+                    <button className="buttons"
+                            type="submit"
+                        // disabled={!termsAndConditionsValue}
+                        // onClick={sendForm}
+                            ref={register}
+                    >
+                        Verstuur
+                    </button>
+
+                </div>
             </>
         );
 

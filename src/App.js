@@ -1,53 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
+import {useForm} from "react-hook-form";
 import './App.css';
-// import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+
 
 function App() {
-    const [strawberryCounter, setStrawberryCounter] = React.useState(0);
-    const [banaanCounter, setBanaanCounter] = React.useState(0);
-    const [appelCounter, setAppelCounter] = React.useState(0);
-    const [kiwiCounter, setKiwiCounter] = React.useState(0);
-    const [resetButton, setResetButton] = React.useState(false);
+    const [strawberryCounter, setStrawberryCounter] = useState(0);
+    const [bananaCounter, setBananaCounter] = useState(0);
+    const [appleCounter, setAppleCounter] = useState(0);
+    const [kiwiCounter, setKiwiCounter] = useState(0);
 
-    function resetAll() {
+    const [firstnameValue, setFirstnameValue] = useState('');
+    const [lastnameValue, setLastnameValue] = useState('');
+    const [ageValue, setAgeValue] = useState('');
+    const [postcodeValue, setPostcodeValue] = useState('');
+    const [commentValue, setCommentValue] = useState('');
+    const [checkedTerms, toggleCheckedTerms] = React.useState(false);
+
+    function resetAllFruitCounter() {
         setStrawberryCounter(0);
-        setBanaanCounter(0);
-        setAppelCounter(0);
+        setBananaCounter(0);
+        setAppleCounter(0);
         setKiwiCounter(0);
     }
 
-    {/*// function fruitOrder() {*/
-    }
-    {/*//     console.log(`Your order is: strawberries: "${strawberryCounter}", bananen: "${banaanCounter}", appels: "${appelCounter}", kiwi's: "${kiwiCounter}".`)*/
-    }
-    {/*//  setResetButton(true);*/
-    }
-    {/*// }*/
-    }
-
-    {/*// function resetButton(e){*/
-    }
-    {/*//     e.target.reset();*/
-    }
-    {/*// }*/
+    function sendOrderForm() {
+        setFirstnameValue('')
+        setLastnameValue('');
+        setAgeValue(0);
+        setPostcodeValue(0)
+        setCommentValue('');
     }
 
-        const {handleSubmit, errors, register, watch} = useForm({mode: 'onBlur'});
+        const {handleSubmit, errors, register} = useForm();
 
-
-        function onFormSubmit(e) {
-            e.preventDefault();
-            console.log('Submitted!');
-        }
-
-        function onFormSubmit(data) {
+        const onSubmit = data => {
+            errors.preventDefault();
             console.log(data);
         }
 
-        return (
+
+    return (
             <>
                 <div className="container">
+
                     <h1>Fruitmand bezorgservice</h1>
 
                     <div className="fruits">
@@ -56,6 +51,7 @@ function App() {
                             type="button"
                             name="aardbei-min"
                             onClick={() => setStrawberryCounter(strawberryCounter - 1)}
+                            disabled={strawberryCounter === 0}
                         >-1
                         </button>
                         <p>{strawberryCounter}</p>
@@ -66,52 +62,54 @@ function App() {
                         >+1
                         </button>
                     </div>
-
                     <div className="fruits">
-                        <p className="fruit-text"> 🍌 Banaan</p>
+                        <p className="fruit-text"> 🍌 Banana</p>
                         <button
                             type="button"
-                            name="aardbei-min"
-                            onClick={() => setBanaanCounter(banaanCounter - 1)}
+                            name="banana-min"
+                            onClick={() => setBananaCounter(bananaCounter - 1)}
+                            disabled={bananaCounter === 0}
                         >-1
                         </button>
-                        <p>{banaanCounter}</p>
+                        <p>{bananaCounter}</p>
                         <button
                             type="button"
-                            name="aardbei-plus"
-                            onClick={() => setBanaanCounter(banaanCounter + 1)}
+                            name="banana-plus"
+                            onClick={() => setBananaCounter(bananaCounter + 1)}
+                        >+1
+                        </button>
+
+                    </div>
+                    <div className="fruits">
+                        <p className="fruit-text">🍏 Apple</p>
+                        <button
+                            type="button"
+                            name="apple-min"
+                            onClick={() => setAppleCounter(appleCounter - 1)}
+                            disabled={appleCounter === 0}
+                        >-1
+                        </button>
+                        <p>{appleCounter}</p>
+                        <button
+                            type="button"
+                            name="apple-plus"
+                            onClick={() => setAppleCounter(appleCounter + 1)}
                         >+1
                         </button>
                     </div>
-                    <div className="fruits">
-                        <p className="fruit-text">🍏 Appel</p>
-                        <button
-                            type="button"
-                            name="aardbei-min"
-                            onClick={() => setAppelCounter(appelCounter - 1)}
-                        >-1
-                        </button>
-                        <p>{appelCounter}</p>
-                        <button
-                            type="button"
-                            name="aardbei-plus"
-                            onClick={() => setAppelCounter(appelCounter + 1)}
-                        >+1
-                        </button>
-                    </div>
-
                     <div className="fruits">
                         <p className="fruit-text">🥝 Kiwi</p>
                         <button
                             type="button"
-                            name="aardbei-min"
+                            name="kiwi-min"
                             onClick={() => setKiwiCounter(kiwiCounter - 1)}
+                            disabled={kiwiCounter === 0}
                         >-1
                         </button>
                         <p>{kiwiCounter}</p>
                         <button
                             type="button"
-                            name="aardbei-plus"
+                            name="kiwi-plus"
                             onClick={() => setKiwiCounter(kiwiCounter + 1)}
                         >+1
                         </button>
@@ -120,153 +118,141 @@ function App() {
                 <button className="buttons"
                     type="reset"
                     name="reset-button"
-                    onClick={resetButton}
+                    onClick={resetAllFruitCounter}
                 >
                     Reset
                 </button>
+                </div>
 
                 <div  className="order-container">
-                <form onSubmit={handleSubmit(onFormSubmit)} className="contact-container">
-                    <label htmlFor="firstname" className="labels"
-                    >
-                        Firstname:
+
+                <form className="contact-container"  onSubmit={handleSubmit(onSubmit)}>
+
+                    <label htmlFor="firstname" className="labels">
+                        Firstname
+                    </label>
                         <input
                             type="text"
                             id="firstname"
-                            name="name"
-                            // value={firstnameValue}
+                            name="firstname"
                             placeholder="Type here your firstname"
-                            ref={register({required: true})}
-
+                            {...register("firstname", {required: true})}
                         />
-                        {errors.firstname && <p>{errors.firstname.message}</p>}
-                    </label>
+                        {errors.firstname && <p>{errors.firstname}</p>}
 
-                    <label htmlFor="lastname" className="labels"
-                    >
-                        Lastname:
-                        <input
+
+                    <label htmlFor="lastname" className="labels">
+                        Lastname
+                    </label>
+                    <input
                             type="text"
                             id="lastname"
-                            // value={lastnameValue}
                             placeholder="Type here your lastname"
-                            ref={register({required: true})}
+                            {...register("lastname", {required: true})}
                         />
-                        {errors.lastname && <p>{errors.lastname.message}</p>}
-                    </label>
+                        {errors.lastname && <p>{errors.lastname}</p>}
 
-                    <label htmlFor="form-age" className="labels"
-                    >
-                        Leeftijd:
+                    <label htmlFor="form-age" className="labels">
+                        Leeftijd
+                    </label>
                         <input
                             type="number"
                             id="form-age"
-                            name="age"
-                            // value={ageValue}
                             placeholder="0"
-                            ref={register({required: true})}
-
+                            {...register("age", { required: "You have to be minimum 16!", min: 16, max: 99 })}
                         />
-                    </label>
+                        {errors.ageValue && <p>{errors.ageValue.message}</p>}
 
-                    <label htmlFor="form-postcode" className="labels"
-                    >
-                        Postcode:
+
+                    <label htmlFor="form-postcode" className="labels">
+                        Postcode
+                    </label>
                         <input
                             type="number"
                             id="form-postcode"
-                            name="postcode"
-                            // value={postcodeValue}
-                            placeholder="0"
-                            ref={register({required: true})}
+                            placeholder="1234 QZ"
+                            {...register("form-postcode", { required: {value: 7, message: "INVALID FORM, TRY THIS: 1234 QZ"}}
+                            )}
                         />
-                    </label>
-                </form>
+                        {errors.postcode && <p>{errors.postcode.message}</p>}
 
-                <h2>Bezorgfrequentie</h2>
-                <div className="radio-buttons">
+
+                    <fieldset>
+                        <legend>Delivery frequency</legend>
+
                     <label htmlFor="everyWeek">
                         <input
                             type="radio"
                             name="order"
                             id="everyWeek"
-                            ref={register}
+                            {...register("everyWeek", {required: true})}
                         />
-                        Iedere Week
+                        Every Week
                     </label>
                     <label htmlFor="secondWeek">
                         <input
                             type="radio"
                             name="order"
                             id="secondWeek"
-                            ref={register}
+                            {...register("secondWeek", {required: true})}
                         />
-                        Om de week
+                        Every second week
                     </label>
                     <label htmlFor="eachMonth">
                         <input
                             type="radio"
                             name="order"
                             id="eachMonth"
-                            ref={register}
+                            {...register("eachMonth", {required: true})}
                         />
-                        Iedere maand
+                        Each month
                     </label>
                     <label htmlFor="other">
                         <input
                             type="radio"
                             name="order"
                             id="other"
-                            ref={register}
+                            {...register("other", {required: true})}
                         />
-                        Anders
+                        Other
                     </label>
-                </div>
 
-                    <label htmlFor="label-opmerkingen">Opmerking
-                        <input
+
+                    <label>Comment</label>
+                        <input className="comment"
                             type="text"
-                            id="form-opmerkingen"
-                            name="opmerkingen"
-                            // className={opmerkingValue.length > 200 ? 'input-error' : ''}
-                            // value={opmerkingValue}
+                            id="comment"
+                            name="comment"
+                            // className={commentValue.length > 200 ? 'input-error' : ''}
+                            // value={commentValue}
                             placeholder="Please let us know what was your experience"
-                            ref={register(
-                                {
-                                    required: true,
-                                    maxLength: 50,
-                                }
-                            )}
-
+                            {...register("comment", {required: true, maxLength: 150})}
                         />
-                    </label>
 
-                    <label htmlFor="termsAndConditions">
+
+                        <label htmlFor="form-terms-and-conditions">
                         <input
                             type="checkbox"
-                            id="termsAndConditions"
-                            name="terms-and-conditions"
-                            ref={register}
+                            id="form-terms-and-conditions"
+                            checked={checkedTerms}
+                            onChange={() => toggleCheckedTerms(!checkedTerms)}
                         />
-                        Ik ga akkoord met de algemene voorwaarden
+                        I agree with the terms and conditions
                     </label>
+                    </fieldset>
 
-                </div>
-
-                    <button className="buttons"
+                    <input
                             type="submit"
-                        // disabled={!termsAndConditionsValue}
-                        // onClick={sendForm}
-                            ref={register}
-                    >
-                        Verstuur
-                    </button>
+                            value="Submit"
+                   />
+
+                </form>
+
 
                 </div>
-            </>
-        );
-
-}
+        </>
+    )
+};
 
 export default App;
 

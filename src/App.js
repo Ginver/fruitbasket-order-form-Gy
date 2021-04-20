@@ -9,12 +9,12 @@ function App() {
     const [appleCounter, setAppleCounter] = useState(0);
     const [kiwiCounter, setKiwiCounter] = useState(0);
 
-    const [firstnameValue, setFirstnameValue] = useState('');
-    const [lastnameValue, setLastnameValue] = useState('');
-    const [ageValue, setAgeValue] = useState('');
-    const [postcodeValue, setPostcodeValue] = useState('');
-    const [commentValue, setCommentValue] = useState('');
-    const [checkedTerms, toggleCheckedTerms] = React.useState(false);
+    // const [firstnameValue, setFirstnameValue] = useState('');
+    // const [lastnameValue, setLastnameValue] = useState('');
+    // const [ageValue, setAgeValue] = useState('');
+    // const [postcodeValue, setPostcodeValue] = useState('');
+    // const [commentValue, setCommentValue] = useState('');
+    // const [checkedTerms, toggleCheckedTerms] = React.useState(false);
 
     function resetAllFruitCounter() {
         setStrawberryCounter(0);
@@ -23,18 +23,20 @@ function App() {
         setKiwiCounter(0);
     }
 
-    function sendOrderForm() {
-        setFirstnameValue('')
-        setLastnameValue('');
-        setAgeValue(0);
-        setPostcodeValue(0)
-        setCommentValue('');
-    }
+    // function sendOrderForm() {
+    //     setFirstnameValue('')
+    //     setLastnameValue('');
+    //     setAgeValue(0);
+    //     setPostcodeValue(0)
+    //     setCommentValue('');
+    // }
 
-        const {handleSubmit, errors, register} = useForm();
+        const {handleSubmit, errors, register} = useForm({ mode: "onBlur", defaultValues: {
+            age: 18,
+            }});
 
-        const onSubmit = data => {
-            errors.preventDefault();
+        function onSubmit(data) {
+            // errors.preventDefault();
             console.log(data);
         }
 
@@ -134,11 +136,11 @@ function App() {
                         <input
                             type="text"
                             id="firstname"
-                            name="firstname"
+                            name='firstname'
                             placeholder="Type here your firstname"
-                            {...register("firstname", {required: true})}
+                            ref={register("firstname", {required: true, message: "Please fill in your firstname!"})}
                         />
-                        {errors.firstname && <p>{errors.firstname}</p>}
+                        {errors.firstname && <p>{errors.firstname.message}</p>}
 
 
                     <label htmlFor="lastname" className="labels">
@@ -147,10 +149,11 @@ function App() {
                     <input
                             type="text"
                             id="lastname"
+                            name='lastname'
                             placeholder="Type here your lastname"
-                            {...register("lastname", {required: true})}
+                            ref={register("lastname", {required: true, message: "Please fill in your lastname!"})}
                         />
-                        {errors.lastname && <p>{errors.lastname}</p>}
+                        {errors.lastname && <p>{errors.lastname.message}</p>}
 
                     <label htmlFor="form-age" className="labels">
                         Leeftijd
@@ -158,20 +161,28 @@ function App() {
                         <input
                             type="number"
                             id="form-age"
-                            placeholder="0"
-                            {...register("age", { required: "You have to be minimum 16!", min: 16, max: 99 })}
+                            name="age"
+                            placeholder="18"
+                            ref={register(
+                                {
+                                    required: true,
+                                    validate: (value) => value >= 18,
+                                    message: 'Minimum leeftijd is 18 jaar',
+                                }
+                            )}
                         />
-                        {errors.ageValue && <p>{errors.ageValue.message}</p>}
+                        {errors.age && <p>{errors.age.message}</p>}
 
 
                     <label htmlFor="form-postcode" className="labels">
                         Postcode
                     </label>
                         <input
-                            type="number"
+                            type="text"
                             id="form-postcode"
+                            name="postcode"
                             placeholder="1234 QZ"
-                            {...register("form-postcode", { required: {value: 7, message: "INVALID FORM, TRY THIS: 1234 QZ"}}
+                            ref={register("form-postcode", {required: {pattern: /[0-9]{4}[A-Z]{2}/, message: "INVALID FORM, TRY THIS: 1234 QZ"}}
                             )}
                         />
                         {errors.postcode && <p>{errors.postcode.message}</p>}
@@ -180,76 +191,86 @@ function App() {
                     <fieldset>
                         <legend>Delivery frequency</legend>
 
-                    <label htmlFor="everyWeek">
+                    <label htmlFor="everyWeek">Every Week
+                    </label>
                         <input
                             type="radio"
                             name="order"
                             id="everyWeek"
-                            {...register("everyWeek", {required: true})}
+                            value="everyWeek"
+                            ref={register("everyWeek", {required: true})}
                         />
-                        Every Week
+
+                    <label htmlFor="secondWeek">Every second week
                     </label>
-                    <label htmlFor="secondWeek">
                         <input
                             type="radio"
                             name="order"
                             id="secondWeek"
-                            {...register("secondWeek", {required: true})}
+                            value="secondWeek"
+                            ref={register("secondWeek", {required: true})}
                         />
-                        Every second week
+
+                    <label htmlFor="eachMonth">Each month
                     </label>
-                    <label htmlFor="eachMonth">
                         <input
                             type="radio"
                             name="order"
                             id="eachMonth"
-                            {...register("eachMonth", {required: true})}
+                            value="eachMonth"
+                            ref={register("eachMonth", {required: true})}
                         />
-                        Each month
-                    </label>
-                    <label htmlFor="other">
+
+
+                    <label htmlFor="other">Other</label>
                         <input
                             type="radio"
-                            name="order"
+                            name="other"
                             id="other"
-                            {...register("other", {required: true})}
+                            value="other"
+                            ref={register("other", {required: true})}
                         />
-                        Other
-                    </label>
 
 
-                    <label>Comment</label>
+                        {/*// dit werkt niet*/}
+                        {/*{selectedOther === "other" && (*/}
+                        {/*    <input*/}
+                        {/*        name="otherFrequency"*/}
+                        {/*        ref={register({required: true})}*/}
+                        {/*        placeholder="Andere frequentie, nl:"*/}
+                        {/*        />*/}
+                        {/*)}*/}
+
+                    <label htmlFor='comment'>Comment</label>
                         <input className="comment"
                             type="text"
                             id="comment"
                             name="comment"
                             // className={commentValue.length > 200 ? 'input-error' : ''}
-                            // value={commentValue}
+                            // value='comment' // een input element heeft altijd een value attribute
                             placeholder="Please let us know what was your experience"
-                            {...register("comment", {required: true, maxLength: 150})}
+                            // onChange={(e) => setCommentValue(e.target.value)}
+                            ref={register('comment', {required: true, maxLength: 200})}
                         />
 
-
-                        <label htmlFor="form-terms-and-conditions">
+                        <label htmlFor='terms-and-conditions'></label>
                         <input
                             type="checkbox"
-                            id="form-terms-and-conditions"
-                            checked={checkedTerms}
-                            onChange={() => toggleCheckedTerms(!checkedTerms)}
+                            id="terms-and-conditions"
+                            name="terms-and-conditions"
+                            value='checked'
+
+                            ref={register('terms-and-conditions', {required: true})}
                         />
                         I agree with the terms and conditions
-                    </label>
+
                     </fieldset>
 
                     <input
-                            type="submit"
-                            value="Submit"
+                       type="submit"
                    />
-
                 </form>
-
-
-                </div>
+            </div>
         </>
     )
 };
